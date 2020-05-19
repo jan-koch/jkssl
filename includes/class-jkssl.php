@@ -173,6 +173,8 @@ class Jkssl {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+		add_shortcode( 'render_sessions', array( $plugin_public, 'render_live_sessions' ) );
+
 	}
 
 	/**

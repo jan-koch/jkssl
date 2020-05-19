@@ -44,13 +44,13 @@ class Jkssl_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -100,4 +100,55 @@ class Jkssl_Public {
 
 	}
 
+	/**
+	 * Load sessions that are currently live.
+	 *
+	 * @return WP_Query
+	 */
+	public function load_live_sessions() {
+		if ( ! $live_sessions = wp_cache_get( 'jkssl_live_sessions' ) ) { // phpcs:ignore
+			$query_args = array(
+				'post_type'   => 'sessions',
+				'post_status' => 'publish',
+			);
+
+			$two_days_ago = date( 'Ymd', strtotime( '-2 days' ) );
+			$today        = date( 'Ymd' );
+
+			$query_args['meta_query'] = array(
+				'relation'           => 'AND',
+				'two_days_ago_query' => array(
+					'key'     => 'ess_session_day',
+					'value'   => $two_days_ago,
+					'compare' => '>',
+				),
+				'today_query'        => array(
+					'key'     => 'ess_session_day',
+					'value'   => $today,
+					'compare' => '<=',
+				),
+			);
+
+			$live_sessions = new WP_Query( $query_args );
+			if ( $live_sessions->have_posts() ) {
+				wp_cache_set( 'jkssl_live_sessions', $live_sessions->posts, '', 86400 );
+
+				return $live_sessions->posts;
+			}
+		} else {
+			return ( wp_cache_get( 'jkssl_live_sessions' ) );
+		}
+	}
+
+	/**
+	 * Shortcode callback to render the live sessions.
+	 *
+	 * @return void
+	 */
+	public function render_live_sessions() {
+		ob_start();
+		$live_sessions = $this->load_live_sessions();
+		print_r( $live_sessions );
+		echo ob_get_clean();
+	}
 }
