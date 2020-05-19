@@ -148,7 +148,53 @@ class Jkssl_Public {
 	public function render_live_sessions() {
 		ob_start();
 		$live_sessions = $this->load_live_sessions();
-		print_r( $live_sessions );
+		if ( ! empty( $live_sessions ) ) {
+			foreach ( $live_sessions as $live_session ) {
+				set_query_var( 'session_id', $live_session->ID );
+				self::get_template_part( 'jkssl-public-display' );
+			}
+		}
 		echo ob_get_clean();
 	}
+
+	public static function get_template_part( $slug, $name = null ) {
+
+		do_action( "jkssl_get_template_part_{$slug}", $slug, $name );
+
+		$templates = array();
+		if ( isset( $name ) ) {
+			$templates[] = "{$slug}-{$name}.php";
+		}
+
+		$templates[] = "{$slug}.php";
+
+		self::get_template_path( $templates, true, false );
+	}
+
+	/*
+	 Extend locate_template from WP Core
+	* Define a location of your plugin file dir to a constant in this case = PLUGIN_DIR_PATH
+	* Note: PLUGIN_DIR_PATH - can be any folder/subdirectory within your plugin files
+	*/
+	public static function get_template_path( $template_names, $load = false, $require_once = true ) {
+		$located = '';
+		foreach ( (array) $template_names as $template_name ) {
+			if ( ! $template_name ) {
+				continue;
+			}
+
+			/* search file within the PLUGIN_DIR_PATH only */
+			if ( file_exists( ABSPATH . 'wp-content/plugins/jkssl/public/partials/' . $template_name ) ) {
+				$located = ABSPATH . 'wp-content/plugins/jkssl/public/partials/' . $template_name;
+				break;
+			}
+		}
+
+		if ( $load && '' != $located ) {
+			load_template( $located, $require_once );
+		}
+
+		return $located;
+	}
+
 }
