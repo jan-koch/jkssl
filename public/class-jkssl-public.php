@@ -149,10 +149,12 @@ class Jkssl_Public {
 		ob_start();
 		$live_sessions = $this->load_live_sessions();
 		if ( ! empty( $live_sessions ) ) {
+			echo "<div id='summit-sessions-container'>";
 			foreach ( $live_sessions as $live_session ) {
 				set_query_var( 'session_id', $live_session->ID );
 				self::get_template_part( 'jkssl-public-display' );
 			}
+			echo '</div>';
 		}
 		echo ob_get_clean();
 	}
