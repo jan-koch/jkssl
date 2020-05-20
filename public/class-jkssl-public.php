@@ -112,8 +112,13 @@ class Jkssl_Public {
 				'post_status' => 'publish',
 			);
 
-			$two_days_ago = date( 'Ymd', strtotime( '-2 days' ) );
-			$today        = date( 'Ymd' );
+			$two_days_ago     = date( 'Y-m-d', strtotime( '-2 days' ) );
+			$two_days_ago_obj = new DateTime( '-2 days' );
+			$two_days_ago_obj->setTime( 7, 0 );
+			$two_days_ago = $two_days_ago_obj->format( 'Y-m-d H:i:s' );
+			$today_obj    = new DateTime();
+			$today_obj->setTime( 7, 0 );
+			$today = $today_obj->format( 'Y-m-d H:i:s' );
 
 			$query_args['meta_query'] = array(
 				'relation'           => 'AND',
@@ -148,8 +153,9 @@ class Jkssl_Public {
 	public function render_live_sessions() {
 		ob_start();
 		$live_sessions = $this->load_live_sessions();
+		$session_count = count( $live_sessions );
 		if ( ! empty( $live_sessions ) ) {
-			echo "<div id='summit-sessions-container'>";
+			echo "<div id='summit-sessions-container' data-session-count='$session_count'>";
 			foreach ( $live_sessions as $live_session ) {
 				set_query_var( 'session_id', $live_session->ID );
 				self::get_template_part( 'jkssl-public-display' );
