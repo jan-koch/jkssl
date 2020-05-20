@@ -20,8 +20,9 @@ $permalink     = get_the_permalink( $session_id );
 $speaker       = get_post_meta( $session_id, 'ess_speaker_name', true );
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<div id="session-<?php echo $session_id; ?>" class='summit-session'>
-<a href="<?php echo esc_url( $video ); ?>" class="html5lightbox" data-thumbnail="<?php echo $thumb; ?> "><img src="<?php echo $thumb; ?>" alt="<?php echo $title; ?>">
+<div id="session-<?php echo esc_attr( $session_id ); ?>" class='summit-session'>
+<a href="<?php echo esc_url( $video ); ?>" class="html5lightbox" data-thumbnail="<?php echo esc_url( $thumb ); ?> ">
+	<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>">
 </a>
 
 <h2>
