@@ -19,7 +19,6 @@
     font-family: "Varela Round", Sans-serif;
 }
 #summit-sessions-container h2 a span {
-    font-size: 20px;
     font-style: italic;
 }
 #summit-sessions-container h2 a {
@@ -28,4 +27,13 @@
 }
 #summit-sessions-container h2 a:hover {
     color: #104954;
+}
+@media screen and (max-width: 480px) {
+    #summit-sessions-container {
+        grid-template-columns: repeat(1, 95%);
+    }
+    #summit-sessions-container h2 {
+        margin: 10px;
+        font-size: 18px;
+    }
 }
