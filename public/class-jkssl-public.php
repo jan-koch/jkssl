@@ -114,10 +114,10 @@ class Jkssl_Public {
 
 			$two_days_ago     = date( 'Y-m-d', strtotime( '-2 days' ) );
 			$two_days_ago_obj = new DateTime( '-2 days' );
-			$two_days_ago_obj->setTime( 7, 0 );
+			$two_days_ago_obj->setTime( 12, 0 );
 			$two_days_ago = $two_days_ago_obj->format( 'Y-m-d H:i:s' );
 			$today_obj    = new DateTime();
-			$today_obj->setTime( 7, 0 );
+			$today_obj->setTime( 12, 0 );
 			$today = $today_obj->format( 'Y-m-d H:i:s' );
 
 			$query_args['meta_query'] = array(
@@ -137,6 +137,7 @@ class Jkssl_Public {
 			Jkssl::write_log( $two_days_ago . ' - ' . $today );
 
 			$live_sessions = new WP_Query( $query_args );
+			Jkssl::write_log( count( $live_sessions->posts ) );
 			if ( $live_sessions->have_posts() ) {
 				wp_cache_set( 'jkssl_live_sessions', $live_sessions->posts, '', 86400 );
 
