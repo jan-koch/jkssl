@@ -22,6 +22,7 @@
  */
 class Jkssl_Public {
 
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -51,7 +52,6 @@ class Jkssl_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
@@ -60,7 +60,6 @@ class Jkssl_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -74,7 +73,6 @@ class Jkssl_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jkssl-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -83,7 +81,6 @@ class Jkssl_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -97,7 +94,6 @@ class Jkssl_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jkssl-public.js', array( 'jquery' ), $this->version, false );
-
 	}
 
 	/**
@@ -105,8 +101,7 @@ class Jkssl_Public {
 	 *
 	 * @return WP_Query
 	 */
-	public function load_live_sessions() {
-		if ( ! $live_sessions = wp_cache_get( 'jkssl_live_sessions' ) ) { // phpcs:ignore
+	public function load_live_sessions() { 		if (!$live_sessions = wp_cache_get('jkssl_live_sessions')) { // phpcs:ignore
 			$query_args = array(
 				'post_type'   => 'sessions',
 				'post_status' => 'publish',
@@ -114,10 +109,10 @@ class Jkssl_Public {
 
 			$two_days_ago     = date( 'Y-m-d', strtotime( '-2 days' ) );
 			$two_days_ago_obj = new DateTime( '-2 days' );
-			$two_days_ago_obj->setTime( 12, 0 );
+			$two_days_ago_obj->setTime( 14, 0 );
 			$two_days_ago = $two_days_ago_obj->format( 'Y-m-d H:i:s' );
 			$today_obj    = new DateTime();
-			$today_obj->setTime( 12, 0 );
+			$today_obj->setTime( 13, 0 );
 			$today = $today_obj->format( 'Y-m-d H:i:s' );
 
 			$query_args['meta_query'] = array(
@@ -143,9 +138,9 @@ class Jkssl_Public {
 
 				return $live_sessions->posts;
 			}
-		} else {
-			return ( wp_cache_get( 'jkssl_live_sessions' ) );
-		}
+	} else {
+		return ( wp_cache_get( 'jkssl_live_sessions' ) );
+	}
 	}
 
 	/**
@@ -207,5 +202,4 @@ class Jkssl_Public {
 
 		return $located;
 	}
-
 }
