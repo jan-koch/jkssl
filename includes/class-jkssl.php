@@ -217,4 +217,17 @@ class Jkssl {
 		return $this->version;
 	}
 
+	/**
+	 * Write content to debug.log if debug mode is enabled.
+	 *
+	 * @param mixed $log - String or Array to output to the log file.
+	 * */
+	public static function write_log( $log ) {
+		if ( is_array( $log ) || is_object( $log ) ) {
+			error_log( print_r( $log, true ) ); //phpcs:ignore
+		} else {
+			error_log( $log ); //phpcs:ignore
+		}
+	}
+
 }

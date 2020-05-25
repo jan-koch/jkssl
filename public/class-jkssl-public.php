@@ -134,6 +134,8 @@ class Jkssl_Public {
 				),
 			);
 
+			Jkssl::write_log( $two_days_ago . ' - ' . $today );
+
 			$live_sessions = new WP_Query( $query_args );
 			if ( $live_sessions->have_posts() ) {
 				wp_cache_set( 'jkssl_live_sessions', $live_sessions->posts, '', 86400 );

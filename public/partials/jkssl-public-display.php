@@ -35,3 +35,5 @@ $speaker       = get_post_meta( $session_id, 'ess_speaker_name', true );
 
 <?php
 echo ob_get_clean();
+
+?>
