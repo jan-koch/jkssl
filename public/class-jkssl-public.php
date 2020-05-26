@@ -166,16 +166,7 @@ class Jkssl_Public {
 	 * @return void
 	 */
 	public function render_live_sessions() {
-		$two_days_ago     = date( 'Y-m-d', strtotime( '-2 days' ) );
-		$two_days_ago_obj = new DateTime( '-2 days' );
-		$two_days_ago_obj->setTime( 13, 0 );
-		$two_days_ago = $two_days_ago_obj->format( 'Y-m-d H:i:s' );
-		$today_obj    = new DateTime();
-		$today_obj->setTime( 13, 0 );
-		$today = $today_obj->format( 'Y-m-d H:i:s' );
-		$now   = date( 'Y-m-d H:i:s' );
 		ob_start();
-		echo "<br >$two_days_ago - $today - $now<br />";
 		$live_sessions = $this->load_live_sessions();
 		$session_count = count( $live_sessions );
 		if ( ! empty( $live_sessions ) ) {
