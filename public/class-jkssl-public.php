@@ -120,20 +120,33 @@ class Jkssl_Public {
 			$today_obj->setTime( 13, 0 );
 			$today = $today_obj->format( 'Y-m-d H:i:s' );
 
-			$query_args['meta_query'] = array(
-				'relation'           => 'AND',
-				'two_days_ago_query' => array(
-					'key'     => 'ess_session_day',
-					'value'   => $two_days_ago,
-					'compare' => '>',
-				),
-				'today_query'        => array(
-					'key'     => 'ess_session_day',
-					'value'   => $today,
-					'compare' => '<',
-				),
-			);
+			// Load publicly available sessions with this meta query.
+			if ( ! is_user_logged_in() ) {
+				$query_args['meta_query'] = array(
+					'relation'           => 'AND',
+					'two_days_ago_query' => array(
+						'key'     => 'ess_session_day',
+						'value'   => $two_days_ago,
+						'compare' => '>',
+					),
+					'today_query'        => array(
+						'key'     => 'ess_session_day',
+						'value'   => $today,
+						'compare' => '<',
+					),
+				);
+			} else {
+				$query_args['meta_query'] = array(
+					'relation'    => 'AND',
+					'today_query' => array(
+						'key'     => 'ess_session_day',
+						'value'   => $today,
+						'compare' => '<',
+					),
+				);
+			}
 
+			// Load AAP sessions with this meta query.
 			Jkssl::write_log( $two_days_ago . ' - ' . $today );
 
 			$live_sessions = new WP_Query( $query_args );
@@ -160,7 +173,7 @@ class Jkssl_Public {
 		$today_obj    = new DateTime();
 		$today_obj->setTime( 13, 0 );
 		$today = $today_obj->format( 'Y-m-d H:i:s' );
-		$now = date('Y-m-d H:i:s');
+		$now   = date( 'Y-m-d H:i:s' );
 		ob_start();
 		echo "<br >$two_days_ago - $today - $now<br />";
 		$live_sessions = $this->load_live_sessions();
